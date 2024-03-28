@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Image Converter</title>
+</head>
+
+<body>
+    <center>
+        <h2>PNG to JPEG Image Converter</h2>
+        <form id="convert_form">
+            <label for="pngFile">Upload a png file:</label>
+            <input type="file" id="pngFile" name="filename" accept="image/png">
+            <input type="submit" name="Convert!">
+        </form>
+        <h4>Result:</h4>
+        <h4 id="error" hidden=true style="color: red;">Error encountered!</h4>
+        <canvas id="result_canvas"></canvas>
+    </center>
+    <script>
+        const form = document.getElementById("convert_form")
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault()
+            handleUpload(e)
+        })
+
+        function handleUpload(event) {
+            let errorNote = document.getElementById("error");
+            errorNote.hidden = true;
+            const file = document.getElementById("pngFile").files[0];
+            const url = window.location.origin + "/convert-to-jpeg";
+            fetch(url, {
+                method: "POST",
+                body: file
+            }).then((response) => {
+                if (!response.ok) {
+                    errorNote.hidden = false;
+                    throw new Error(`Non-OK status: ${response.status}. Message: ${response.statusText}`);
+                }
+                response.blob().then((data) => drawImage(data));
+            });
+        }
+
+        function drawImage(image) {
+            let canvas = document.getElementById("result_canvas");
+            let context = canvas.getContext("2d");
+            let bitmap = createImageBitmap(image).then((bitmap) => {
+                canvas.width = bitmap.width;
+                canvas.height = bitmap.height;
+                context.drawImage(bitmap, 0, 0);
+            });
+        }
+    </script>
+</body>
+
+</html>
