@@ -234,7 +234,7 @@ You made it! :champagne: :partying_face:.
 
 ## Discussion (optional)
 
-What now? Well, because the codebase is so minimal right now, adding features make the single file too unwieldy. Here are some ideas:
+What now? Well, because the codebase is so minimal right now, adding features won't make the single file too unwieldy. Here are some ideas:
 
 - The image conversion code is not limited to PNG or JPEG. Any browser supported image formats can be used for input and output. You could easily add a simple dropdown to select output format, making it an anything-to-anything converter.
 - Add a simple caching feature via `File` hashing.
